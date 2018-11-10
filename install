@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -ex
+
+docker build -t udp-listener -f dockerfile .
+
+echo 'run "docker run --hostname=udp-listener.microcenter.bandsman.co.uk --log-driver syslog --log-opt syslog-address=udp://loghost:42185 -dt --name udp-listener -p 0.0.0.0:22000:22000/udp udp-listener" to start the image'
+echo or
+echo 'run "docker run --hostname=udp-listener.microcenter.bandsman.co.uk -dt --name udp-listener -p 0.0.0.0:22000:22000/udp udp-listener" to start the image'
+echo 'send data with "echo "hello" | socat - udp-sendto:127.0.0.1:22000'"
+echo 'use "docker logs" to check if hello was received'

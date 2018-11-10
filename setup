@@ -1,0 +1,8 @@
+# Install system programs needed by the listener
+
+set -ex
+
+export http_proxy="http://zack:3128"
+export https_proxy="http://zack:3128"
+# mount -o remount,rw,hidepid=2 /proc
+apt-get update && apt-get install -y libpam-tmpdir perl && apt-get clean

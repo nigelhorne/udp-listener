@@ -1,0 +1,43 @@
+#!/usr/bin/env perl
+
+# Author Nigel Horne: njh@bandsman.co.uk
+# Copyright (C) 2016-2018, Nigel Horne
+
+# Usage is subject to licence terms.
+# The licence terms of this software are as follows:
+# Personal single user: GPL2
+# All other users (including Commercial, Charity, Educational, Government)
+#	must apply in writing for a licence for use from Nigel Horne at the
+#	above e-mail.
+
+#	-p: port (default 22000)
+
+use warnings;
+use strict;
+
+use IO::Socket::INET;
+use Getopt::Std;
+
+my %opts;
+
+getopts('p:', \%opts);
+
+$opts{'v'} = 1 if($opts{'d'});
+
+my $port = $opts{'p'} || 22000;
+
+while(1) {
+	# Not needed, but somehow it seems cleaner to close and reopen
+	my $s = IO::Socket::INET->new(LocalPort => $port, Proto => 'udp')
+		or die "Can't listen on port $port";
+
+	LINE: while(1) {
+		my $line;
+
+		$s->recv($line, 256);
+
+		last LINE if($line eq '');
+
+		print $line;
+	}
+}
